@@ -341,7 +341,9 @@ function enviar(){
  botao.textContent='Enviando…';
  msg('Enviando tus respuestas…','info');
  const dados={
-  versao:VERSAO,nome:nome,turma:turma,respostas:c.respostas,
+  versao:VERSAO,
+  envioId:(typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():('e'+Date.now()+Math.random().toString(16).slice(2)),
+  nome:nome,turma:turma,respostas:c.respostas,
   acertosLocal:c.acertos,total:c.total,
   duracaoSeg:Math.round((Date.now()-INICIO)/1000),
   enviadoEm:new Date().toISOString()

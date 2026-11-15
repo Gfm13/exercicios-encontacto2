@@ -36,25 +36,42 @@ function doPost(e) {
     var dados = lerDados_(e);
     validar_(dados);
 
+    // Reenvio automático (retry do navegador) não pode virar duas linhas.
+    var chave = chaveCache_(dados);
+    var cache = CacheService.getScriptCache();
+    if (chave) {
+      var anterior = cache.get(chave);
+      if (anterior) {
+        try { return resposta_(JSON.parse(anterior)); } catch (x) { /* cache velho: segue */ }
+      }
+    }
+
     var trava = LockService.getScriptLock();
     if (!trava.tryLock(20000)) {
       throw new Error('Muitos envios ao mesmo tempo. Tente novamente em alguns segundos.');
     }
     try {
       var resultado = registrar_(dados);
-      return resposta_({
+      var saida = {
         ok: true,
         id: resultado.id,
         acertos: resultado.acertos,
         casi: resultado.casi,
         total: resultado.total
-      });
+      };
+      if (chave) cache.put(chave, JSON.stringify(saida), 21600);
+      return resposta_(saida);
     } finally {
       trava.releaseLock();
     }
   } catch (erro) {
     return resposta_({ ok: false, erro: String(erro && erro.message ? erro.message : erro) });
   }
+}
+
+function chaveCache_(d) {
+  var id = d && d.envioId ? String(d.envioId) : '';
+  return id ? 'envio:' + id.slice(0, 64) : '';
 }
 
 /** Aceita JSON no corpo, JSON em campo "payload" (envio por formulário) ou campos soltos. */

@@ -168,7 +168,16 @@ console.log('\n6. Configuração da página');
 checar(/const ENVIO_URL = "";/.test(html), 'ENVIO_URL está declarada (vazia até configurar)');
 checar(/id="nome"/.test(html) && /id="turma"/.test(html), 'campos de nome e turma existem');
 checar(/id="enviar"/.test(html), 'botão de envio existe');
+checar(/envioId/.test(html), 'envio leva um identificador (evita linha duplicada em retry)');
 checar(html.includes('Comprobar') && html.includes('Ver soluciones') && html.includes('Borrar todo'), 'botões originais preservados');
+
+console.log('\n7. Sintaxe dos arquivos do Apps Script');
+['Codigo.gs', 'Correcao.gs', 'Validacao.gs', 'Gabarito.gs'].forEach((nome) => {
+  const erro = lancar(() => new Function(ler('apps-script', nome)));
+  checar(!erro, nome + ' compila', erro || '');
+});
+const manifesto = lancar(() => JSON.parse(ler('apps-script', 'appsscript.json')));
+checar(!manifesto, 'appsscript.json é JSON válido', manifesto || '');
 
 console.log('');
 if (falhas) {
