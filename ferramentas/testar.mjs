@@ -62,6 +62,7 @@ function executarPagina(html) {
     },
     createElement: elemento,
     querySelectorAll() { return []; },
+    addEventListener() {},
     body: elemento('body')
   };
 
@@ -76,7 +77,7 @@ function executarPagina(html) {
 
   const fabrica = new Function(
     'document', 'localStorage', 'location', 'confirm', 'fetch',
-    script[1] + '\nreturn { norm, strip, comecar, abrirPortada, abrirConteudo };'
+    script[1] + '\nreturn { norm, strip, comecar, abrirPortada, abrirConteudo, abrirSolucoes, fecharSolucoes, alternarPista };'
   );
   const api = fabrica(documento, localStorage, { search: '' }, () => true, () => Promise.reject(new Error('sem rede')));
 
@@ -182,6 +183,10 @@ console.log('\n7. Sintaxe dos arquivos do Apps Script');
 const manifesto = lancar(() => JSON.parse(ler('apps-script', 'appsscript.json')));
 checar(!manifesto, 'appsscript.json é JSON válido', manifesto || '');
 
+const codigoGs = ler('apps-script', 'Codigo.gs');
+checar(/LIMITE_DIARIO/.test(codigoGs) && /contarEnvio_/.test(codigoGs), 'limite diário de envios no Apps Script');
+checar(/zerarLimiteDoDia/.test(codigoGs), 'função para zerar o limite do dia');
+
 console.log('\n8. Fluxo da tela de entrada');
 const pagina = executarPagina(html);
 const no = (id) => pagina.documento.getElementById(id);
@@ -202,6 +207,29 @@ checar(noVoltar('portada').hidden === false && /nombre/i.test(noVoltar('portada-
 noVoltar('nome').value = 'Bruno';
 voltar.api.abrirPortada(true);
 checar(noVoltar('portada-msg').textContent === '', 'trocar de nome limpa o aviso anterior');
+
+console.log('\n9. Soluções sem sobrescrever as respostas');
+const sol = executarPagina(html);
+const noSol = (id) => sol.documento.getElementById(id);
+
+checar(/id="sol-modal"/.test(html) && /id="sol-preencher"/.test(html), 'painel de soluções existe no HTML');
+checar(/data-r="/.test(marcação), 'as pistas guardam a resposta para consulta individual');
+checar(typeof noSol('rst').onclick === 'function', '«Borrar todo» continua ligado');
+
+sol.api.abrirSolucoes();
+checar(noSol('sol-modal').hidden === false, '«Ver soluciones» abre o painel');
+const corpoSol = noSol('sol-corpo').innerHTML;
+checar(/hablé/.test(corpoSol) && /me levanté/.test(corpoSol), 'o painel mostra as respostas certas');
+checar(corpoSol.split('<h3>').length - 1 === 7, 'o painel lista os sete exercícios', String(corpoSol.split('<h3>').length - 1));
+
+sol.api.fecharSolucoes();
+checar(noSol('sol-modal').hidden === true, 'fechar esconde o painel');
+
+const pista = { dataset: { r: 'hablé', t: '(hablar)' }, innerHTML: '(hablar)' };
+sol.api.alternarPista(pista);
+checar(/hablé/.test(pista.innerHTML), 'clicar na pista revela só aquela resposta');
+sol.api.alternarPista(pista);
+checar(pista.innerHTML === '(hablar)', 'clicar de novo esconde a resposta');
 
 console.log('');
 if (falhas) {

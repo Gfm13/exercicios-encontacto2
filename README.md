@@ -17,9 +17,11 @@ aluno → index.html (GitHub Pages)
 
 A página abre numa tela inicial que pede só o nome; o conteúdo vem depois. Ela corrige
 na hora (verde / amarelo = só o acento / vermelho) e guarda nome e respostas no
-navegador. O envio é opcional e manual: só quando o aluno clica é que nome e respostas
-vão para a planilha. A nota é recalculada no servidor a partir do gabarito, que fica no
-Apps Script.
+navegador. «Ver soluciones» abre um painel com as frases corrigidas **sem apagar** o que
+já foi escrito (e cada pista revela só a sua resposta). O envio é opcional e manual: só
+quando o aluno clica é que nome e respostas vão para a planilha. A nota é recalculada no
+servidor a partir do gabarito, que fica no Apps Script, e há um limite de 300 envios por
+dia para proteger a URL pública.
 
 ## Estrutura
 

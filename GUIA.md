@@ -171,6 +171,19 @@ viram novas linhas; a última é a mais recente).
 Sobre o link: a página tem `<meta name="robots" content="noindex">`, então não aparece
 no Google. Quem tem o link, entra — o que é esperado para uma atividade.
 
+## «Ver soluciones» e o limite diário
+
+- **«Ver soluciones»** abre um painel com as frases já corrigidas e **não mexe** no que
+  o aluno escreveu. Quem quiser preencher os campos de propósito usa o botão
+  "Rellenar los huecos", dentro do painel.
+- Cada pista entre parênteses — (hablar) — é clicável e revela **só** aquela resposta,
+  para quem quer conferir uma palavra sem ver o resto.
+- O Apps Script aceita no máximo **300 envios por dia** (`CFG.LIMITE_DIARIO`). É a
+  proteção contra spam na URL pública: sem ela, um envio automático poderia gastar as
+  cotas do dia e derrubar os envios legítimos. Se precisar liberar o dia (por exemplo
+  depois de um envio falso em massa), rode a função `zerarLimiteDoDia` no editor.
+  Para turmas maiores, aumente o número em `CFG.LIMITE_DIARIO`.
+
 ## Como ler os resultados
 
 Duas abas na planilha:
@@ -203,6 +216,7 @@ Atalhos úteis:
 | Link do Pages dá 404 | build ainda rodando, ou repositório privado | Espere 2 min; confira **Actions** e a visibilidade do repositório |
 | Alterei o código do script e nada mudou | o App da Web usa uma versão fixa | **Implantar → Gerenciar implantações → ✏️ → Versão: Nova versão → Implantar** |
 | Planilha mostra erro `#NOME?` nas fórmulas | aspas/formatação | Use `;` como separador (planilha em português) e o nome exato da aba |
+| "Limite de 300 envios por dia atingido" | proteção diária do script | Rode `zerarLimiteDoDia` no editor ou espere o próximo dia |
 
 ---
 

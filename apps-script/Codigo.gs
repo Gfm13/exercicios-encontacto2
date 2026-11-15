@@ -18,7 +18,8 @@
 var CFG = {
   ABA_ENVIOS: 'Envios',
   ABA_RESPOSTAS: 'Respostas',
-  EMAIL_AVISO: ''             // opcional: 'professora@escola.com' para receber um e-mail por envio
+  EMAIL_AVISO: '',            // opcional: 'professora@escola.com' para receber um e-mail por envio
+  LIMITE_DIARIO: 300          // envios aceitos por dia (proteção contra spam/flood)
 };
 
 var CABECALHOS = {
@@ -51,6 +52,7 @@ function doPost(e) {
       throw new Error('Muitos envios ao mesmo tempo. Tente novamente em alguns segundos.');
     }
     try {
+      contarEnvio_();
       var resultado = registrar_(dados);
       var saida = {
         ok: true,
@@ -72,6 +74,34 @@ function doPost(e) {
 function chaveCache_(d) {
   var id = d && d.envioId ? String(d.envioId) : '';
   return id ? 'envio:' + id.slice(0, 64) : '';
+}
+
+/**
+ * Limite diário de envios. A URL do app é pública (está no HTML), então um bot
+ * pode postar lixo; o contador evita que isso esgote as cotas do dia e derrube
+ * os envios legítimos. Fica em Script Properties, que é por script (não por aluno).
+ */
+function contarEnvio_() {
+  var props = PropertiesService.getScriptProperties();
+  var chave = chaveDoDia_();
+  var total = Number(props.getProperty(chave) || 0);
+  if (total >= CFG.LIMITE_DIARIO) {
+    throw new Error('Limite de ' + CFG.LIMITE_DIARIO + ' envios por dia atingido. Tente novamente amanhã ou avise a professora.');
+  }
+  props.setProperty(chave, String(total + 1));
+}
+
+function chaveDoDia_() {
+  return 'envios:' + Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd');
+}
+
+/**
+ * Zera o contador de hoje. Use no editor (Executar) se precisar liberar o dia —
+ * por exemplo, depois de um envio falso em massa ou de um teste com muitas linhas.
+ */
+function zerarLimiteDoDia() {
+  PropertiesService.getScriptProperties().deleteProperty(chaveDoDia_());
+  Logger.log('Contador de envios de hoje zerado.');
 }
 
 /** Aceita JSON no corpo, JSON em campo "payload" (envio por formulário) ou campos soltos. */
