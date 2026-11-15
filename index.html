@@ -319,27 +319,7 @@ function postar(corpo){
   .then(r=>r.ok?r.text():Promise.reject(new Error('HTTP '+r.status)))
   .then(t=>{if(!t)return{ok:true};try{return JSON.parse(t);}catch(e){return{ok:true};}})
   .catch(()=>fetch(URL_ENVIO,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:corpo})
-   .then(()=>({ok:true,semConfirmacao:true}))
-   .catch(()=>postarIframe(corpo)));
-}
-
-function postarIframe(corpo){
- return new Promise((resolve,reject)=>{
-  const nomeForm='envio-questionario';
-  const velho=document.getElementById(nomeForm);if(velho)velho.remove();
-  const iframe=document.createElement('iframe');
-  iframe.name=nomeForm;iframe.style.display='none';
-  document.body.appendChild(iframe);
-  const form=document.createElement('form');
-  form.id=nomeForm;form.method='POST';form.action=URL_ENVIO;form.target=nomeForm;form.style.display='none';
-  const campo=document.createElement('input');
-  campo.type='hidden';campo.name='payload';campo.value=corpo;
-  form.appendChild(campo);
-  document.body.appendChild(form);
-  const limite=setTimeout(()=>{form.remove();iframe.remove();resolve({ok:true,semConfirmacao:true});},12000);
-  iframe.addEventListener('load',()=>{clearTimeout(limite);form.remove();iframe.remove();resolve({ok:true,semConfirmacao:true});});
-  try{form.submit();}catch(e){clearTimeout(limite);reject(e);}
- });
+   .then(()=>({ok:true,semConfirmacao:true})));
 }
 
 function enviar(){
