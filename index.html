@@ -386,7 +386,14 @@ porId('sol-cerrar').onclick=fecharSolucoes;
 porId('sol-preencher').onclick=()=>{campos().forEach(f=>{f.value=f.dataset.a;});total();gravar();fecharSolucoes();};
 modal.addEventListener('click',e=>{if(e.target===modal)fecharSolucoes();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)fecharSolucoes();});
-porId('rst').onclick=()=>{campos().forEach(f=>{f.value='';f.classList.remove('ok','wa','ba');});document.querySelectorAll('.sc').forEach(x=>x.textContent='');porId('tot').textContent='';gravar();};
+porId('rst').onclick=()=>{
+ const escritas=campos().filter(f=>String(f.value).trim()!=='');
+ if(escritas.length&&!confirm('¿Borrar las '+escritas.length+' respuestas que escribiste? No se puede deshacer.'))return;
+ campos().forEach(f=>{f.value='';f.classList.remove('ok','wa','ba');});
+ document.querySelectorAll('.sc').forEach(x=>x.textContent='');
+ porId('tot').textContent='';
+ gravar();
+};
 
 /* ---------------- guardar/restaurar no navegador ---------------- */
 const nomeEl=porId('nome'), botao=porId('enviar'), statusEl=porId('status');

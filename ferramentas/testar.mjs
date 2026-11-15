@@ -75,13 +75,14 @@ function executarPagina(html) {
   const script = html.match(/<script>([\s\S]*?)<\/script>/);
   if (!script) throw new Error('Nenhum <script> encontrado no index.html');
 
+  const confirms = [];
   const fabrica = new Function(
     'document', 'localStorage', 'location', 'confirm', 'fetch',
     script[1] + '\nreturn { norm, strip, comecar, abrirPortada, abrirConteudo, abrirSolucoes, fecharSolucoes, alternarPista };'
   );
-  const api = fabrica(documento, localStorage, { search: '' }, () => true, () => Promise.reject(new Error('sem rede')));
+  const api = fabrica(documento, localStorage, { search: '' }, (m) => { confirms.push(m); return true; }, () => Promise.reject(new Error('sem rede')));
 
-  return { secoes, api, documento };
+  return { secoes, api, documento, confirms };
 }
 
 /** Carrega os arquivos .gs como JavaScript comum (são funções puras). */
@@ -230,6 +231,13 @@ sol.api.alternarPista(pista);
 checar(/hablé/.test(pista.innerHTML), 'clicar na pista revela só aquela resposta');
 sol.api.alternarPista(pista);
 checar(pista.innerHTML === '(hablar)', 'clicar de novo esconde a resposta');
+
+console.log('\n10. «Borrar todo» com confirmação');
+checar(/porId\('rst'\)[\s\S]{0,400}?confirm\(/.test(html), 'o botão pede confirmação antes de apagar');
+
+const apagar = executarPagina(html);
+apagar.documento.getElementById('rst').onclick();
+checar(apagar.confirms.length === 0, 'sem respostas escritas, não incomoda com diálogo');
 
 console.log('');
 if (falhas) {
