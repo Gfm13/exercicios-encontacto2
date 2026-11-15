@@ -37,11 +37,14 @@ input:focus,select:focus{outline:none;border-color:var(--ac)}
 button{font:600 .9rem system-ui,sans-serif;background:var(--ac);color:#fff;border:0;border-radius:8px;padding:8px 14px;margin:4px 6px 0 0;cursor:pointer}
 button.g{background:transparent;color:var(--ac);border:2px solid var(--ac)}
 .sc{font:600 .95rem system-ui,sans-serif;margin-left:6px}
-/* --- identificación y envío --- */
-.aluno{display:grid;grid-template-columns:1.6fr 1fr;gap:10px;margin-top:6px}
-@media (max-width:520px){.aluno{grid-template-columns:1fr}}
-.aluno label{display:block;font:600 .82rem system-ui,sans-serif;color:var(--mu);margin-bottom:3px}
-.aluno input{width:100%;box-sizing:border-box;margin:0}
+/* --- entrada, barra do aluno e envio --- */
+#portada{max-width:560px}
+#portada h2{border:0;margin-bottom:.2em}
+#portada label{display:block;font:600 .82rem system-ui,sans-serif;color:var(--mu);margin-bottom:4px}
+#portada input{display:block;width:100%;box-sizing:border-box;margin:0 0 10px;padding:6px 8px;font-size:1rem}
+.barra-aluno{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font:600 .9rem system-ui,sans-serif;color:var(--mu);background:var(--hd);border-radius:10px;padding:8px 12px;margin:12px 0 4px}
+.barra-aluno b{color:var(--tx)}
+button.link{background:none;border:0;color:var(--ac);font:600 .82rem system-ui,sans-serif;padding:0;margin:0;text-decoration:underline;cursor:pointer}
 .sep{border:0;border-top:1px solid var(--ln);margin:14px 0 6px}
 #enviar{background:var(--ok)}
 #enviar[disabled]{opacity:.55;cursor:progress}
@@ -56,14 +59,24 @@ button.g{background:transparent;color:var(--ac);border:2px solid var(--ac)}
 <h1>Pretérito indefinido</h1>
 <p class="sub">(también llamado pretérito perfecto simple) · Explicación, tablas y ejercicios</p>
 
-<div class="card" id="aluno">
-<h3 style="margin-top:0">Identificación</h3>
-<div class="aluno">
-<div><label for="nome">Nombre y apellido</label><input id="nome" type="text" autocomplete="name" maxlength="80" placeholder="Ej.: Ana Souza"></div>
-<div><label for="turma">Curso / clase</label><input id="turma" type="text" autocomplete="off" maxlength="40" placeholder="Ej.: 2º B"></div>
+<section class="card" id="portada">
+<h2 style="margin-top:0">Antes de empezar</h2>
+<p class="note" style="margin-top:.2em">Escribe tu nombre: es lo que la profesora verá junto a tus respuestas. Tu nombre y tus respuestas quedan guardados solo en este dispositivo, para que puedas volver después.</p>
+<div id="portada-continuar" hidden>
+<p class="note" style="margin:0 0 8px">Ya empezaste como <b id="continuar-nome"></b>.</p>
+<button id="continuar">Continuar</button>
+<button id="trocar" class="g">Usar otro nombre</button>
 </div>
-<p class="note" style="margin:8px 0 0">Al final pulsa «Enviar respuestas a la profesora». Solo se envían tu nombre, tu curso y tus respuestas, para el seguimiento de la clase.</p>
+<div id="portada-form">
+<label for="nome">Nombre y apellido</label>
+<input id="nome" type="text" autocomplete="name" maxlength="80" placeholder="Ej.: Ana Souza">
+<button id="comecar">Comenzar</button>
 </div>
+<span id="portada-msg" class="msg msg-erro" role="alert"></span>
+</section>
+
+<div id="conteudo" hidden>
+<div class="barra-aluno">Alumno: <b id="mostra-nome"></b> <button id="trocar-nome" class="link">Cambiar</button></div>
 
 <h2>1. ¿Cuándo se usa?</h2>
 <div class="card">
@@ -156,6 +169,7 @@ button.g{background:transparent;color:var(--ac);border:2px solid var(--ac)}
 <button id="enviar">Enviar respuestas a la profesora</button>
 <span id="status" class="msg msg-info" role="status" aria-live="polite"></span>
 </div>
+</div>
 </main>
 
 <script>
@@ -164,7 +178,7 @@ button.g{background:transparent;color:var(--ac);border:2px solid var(--ac)}
    em /exec — o passo a passo está no GUIA.md, parte 3.
    Enquanto estiver vazio, a página funciona normalmente, só não envia.
    ------------------------------------------------------------------ */
-const ENVIO_URL = "";
+const ENVIO_URL = "https://script.google.com/macros/s/AKfycbyPgbNjYVNoM9_RIOZgPPDFTOzUvQ-nZkPTUZJHvdV-UmyV8JF2QH3DKXX7aV3-dIQT/exec";
 
 const VERSAO = "encontacto2/pret-indefinido/v1";
 const CHAVE = "encontacto2.pret-indefinido.v1";
@@ -286,7 +300,11 @@ porId('sol').onclick=()=>{campos().forEach(f=>{f.value=f.dataset.a;});total();gr
 porId('rst').onclick=()=>{campos().forEach(f=>{f.value='';f.classList.remove('ok','wa','ba');});document.querySelectorAll('.sc').forEach(x=>x.textContent='');porId('tot').textContent='';gravar();};
 
 /* ---------------- guardar/restaurar no navegador ---------------- */
-const nomeEl=porId('nome'), turmaEl=porId('turma'), botao=porId('enviar'), statusEl=porId('status');
+const nomeEl=porId('nome'), botao=porId('enviar'), statusEl=porId('status');
+const portada=porId('portada'), continua=porId('portada-continuar'), formulario=porId('portada-form');
+const conteudo=porId('conteudo'), mostraNome=porId('mostra-nome'), continuaNome=porId('continuar-nome');
+const avisoEl=porId('portada-msg');
+let nomeAluno='', nomeSalvo='';
 let enviando=false, estadoEnvio=null, timerGravar=0;
 const INICIO=Date.now();
 
@@ -295,10 +313,54 @@ function gravar(){
  clearTimeout(timerGravar);
  timerGravar=setTimeout(()=>{
   const respostas={};campos().forEach(f=>respostas[f.dataset.qid]=f.value);
-  try{localStorage.setItem(CHAVE,JSON.stringify({nome:nomeEl.value,turma:turmaEl.value,respostas:respostas,ts:Date.now(),enviado:estadoEnvio}));}catch(e){}
+  try{localStorage.setItem(CHAVE,JSON.stringify({nome:nomeAluno||nomeSalvo,respostas:respostas,ts:Date.now(),enviado:estadoEnvio}));}catch(e){}
  },250);
 }
 function msg(texto,tipo){statusEl.className='msg msg-'+(tipo||'info');statusEl.textContent=texto;}
+function aviso(texto,tipo){avisoEl.className='msg msg-'+(tipo||'erro');avisoEl.textContent=texto||'';}
+
+/* ---------------- entrada: o nome libera o conteúdo ---------------- */
+function abrirPortada(mostrarFormulario){
+ portada.hidden=false;conteudo.hidden=true;
+ const temNome=!!(nomeSalvo||nomeAluno);
+ continuaNome.textContent=nomeSalvo||nomeAluno||'';
+ continua.hidden=!(temNome&&!mostrarFormulario);
+ formulario.hidden=temNome&&!mostrarFormulario;
+ if(mostrarFormulario||!temNome){nomeEl.value=nomeSalvo||nomeAluno||'';nomeEl.focus();}
+ aviso('');
+ if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);
+}
+
+function abrirConteudo(nome){
+ nomeAluno=nome;
+ mostraNome.textContent=nome;
+ portada.hidden=true;conteudo.hidden=false;
+ aviso('');
+ gravar();
+ if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);
+}
+
+function temRespostas(){return campos().some(f=>String(f.value).trim()!=='');}
+
+function limparRespostas(){
+ campos().forEach(f=>{f.value='';f.classList.remove('ok','wa','ba');});
+ document.querySelectorAll('.sc').forEach(x=>x.textContent='');
+ porId('tot').textContent='';
+ estadoEnvio=null;
+}
+
+function comecar(){
+ const nome=(nomeEl.value||'').trim();
+ if(nome.length<2){aviso('Escribe tu nombre (al menos 2 letras).');nomeEl.focus();return;}
+ if(nomeSalvo&&norm(nome)!==norm(nomeSalvo)&&temRespostas()){
+  if(!confirm('En este dispositivo hay respuestas guardadas de '+nomeSalvo+'. ¿Empezar de cero como '+nome+'?'))return;
+  limparRespostas();
+ }
+ nomeSalvo=nome;
+ abrirConteudo(nome);
+}
+
+function continuarSessao(){abrirConteudo(nomeAluno||nomeSalvo);}
 
 function mostrarEnviado(){
  if(!estadoEnvio)return;
@@ -325,10 +387,9 @@ function postar(corpo){
 function enviar(){
  if(enviando)return;
  if(!URL_ENVIO){msg('El envío todavía no está configurado. Avisa a tu profesora.','erro');return;}
- const nome=(nomeEl.value||'').trim(), turma=(turmaEl.value||'').trim();
- if(nome.length<3||!turma){
-  msg('Escribe tu nombre y tu curso antes de enviar.','erro');
-  (nome.length<3?nomeEl:turmaEl).focus();
+ const nome=(nomeAluno||nomeSalvo||'').trim();
+ if(nome.length<2){
+  abrirPortada(true);aviso('Escribe tu nombre antes de enviar.');
   return;
  }
  const c=contar();
@@ -343,7 +404,7 @@ function enviar(){
  const dados={
   versao:VERSAO,
   envioId:(typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():('e'+Date.now()+Math.random().toString(16).slice(2)),
-  nome:nome,turma:turma,respostas:c.respostas,
+  nome:nome,respostas:c.respostas,
   acertosLocal:c.acertos,total:c.total,
   duracaoSeg:Math.round((Date.now()-INICIO)/1000),
   enviadoEm:new Date().toISOString()
@@ -365,18 +426,24 @@ function enviar(){
 }
 
 botao.addEventListener('click',enviar);
-[nomeEl,turmaEl].forEach(el=>el.addEventListener('input',gravar));
+porId('comecar').addEventListener('click',comecar);
+porId('continuar').addEventListener('click',continuarSessao);
+porId('trocar').addEventListener('click',()=>abrirPortada(true));
+porId('trocar-nome').addEventListener('click',()=>abrirPortada(true));
+nomeEl.addEventListener('keydown',e=>{if(e.key=='Enter'){e.preventDefault();comecar();}});
+nomeEl.addEventListener('input',()=>aviso(''));
 root.addEventListener('input',gravar);
 root.addEventListener('change',gravar);
 
 /* ---------------- restaurar ao abrir ---------------- */
 (function restaurar(){
  const est=lerEstado();
- if(est.nome)nomeEl.value=est.nome;
- if(est.turma)turmaEl.value=est.turma;
+ nomeSalvo=String(est.nome||'').trim();
  if(est.respostas)campos().forEach(f=>{const v=est.respostas[f.dataset.qid];if(v!=null)f.value=v;});
- if(est.enviado){estadoEnvio=est.enviado;mostrarEnviado();}
- else if(!URL_ENVIO){msg('El envío se activa cuando la profesora configure el destino.','info');}
+ if(est.enviado)estadoEnvio=est.enviado;
+ abrirPortada(false);
+ if(estadoEnvio)mostrarEnviado();
+ else if(!URL_ENVIO)msg('El envío se activa cuando la profesora configure el destino.','info');
 })();
 </script>
 </body>

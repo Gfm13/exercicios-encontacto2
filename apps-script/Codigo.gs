@@ -22,8 +22,8 @@ var CFG = {
 };
 
 var CABECALHOS = {
-  envios: ['Data/hora', 'ID do envio', 'Nome', 'Turma', 'Acertos', 'Quase (só acento)', 'Total', '%', 'Duração (s)', 'Versão', 'Enviado em (ISO)'],
-  respostas: ['Data/hora', 'ID do envio', 'Nome', 'Turma', 'Exercício', 'Nº', 'Pergunta', 'Resposta do aluno', 'Resposta correta', 'Status']
+  envios: ['Data/hora', 'ID do envio', 'Nome', 'Acertos', 'Quase (só acento)', 'Total', '%', 'Duração (s)', 'Versão', 'Enviado em (ISO)'],
+  respostas: ['Data/hora', 'ID do envio', 'Nome', 'Exercício', 'Nº', 'Pergunta', 'Resposta do aluno', 'Resposta correta', 'Status']
 };
 
 /* Abrir a URL no navegador serve para conferir se a implantação está no ar. */
@@ -90,7 +90,6 @@ function lerDados_(e) {
 function validar_(d) {
   var limpo = validarEnvio(d);
   d.nome = limpo.nome;
-  d.turma = limpo.turma;
   d.respostas = limpo.respostas;
   return d;
 }
@@ -107,7 +106,6 @@ function registrar_(d) {
     agora,
     id,
     d.nome,
-    d.turma,
     nota.acertos,
     nota.casi,
     nota.total,
@@ -119,7 +117,7 @@ function registrar_(d) {
 
   if (nota.detalhes.length) {
     var linhas = nota.detalhes.map(function (item) {
-      return [agora, id, d.nome, d.turma, item.ex, item.id, item.pergunta, item.aluno, item.resposta, item.status];
+      return [agora, id, d.nome, item.ex, item.id, item.pergunta, item.aluno, item.resposta, item.status];
     });
     abas.respostas
       .getRange(abas.respostas.getLastRow() + 1, 1, linhas.length, CABECALHOS.respostas.length)
@@ -154,8 +152,8 @@ function avisarEmail_(d, nota, quando) {
   try {
     MailApp.sendEmail({
       to: CFG.EMAIL_AVISO,
-      subject: 'Questionário de espanhol — ' + d.nome + ' (' + d.turma + ')',
-      body: d.nome + ' (' + d.turma + ') enviou em ' + quando + '.\n' +
+      subject: 'Questionário de espanhol — ' + d.nome,
+      body: d.nome + ' enviou em ' + quando + '.\n' +
             'Acertos: ' + nota.acertos + ' / ' + nota.total + ' (quase: ' + nota.casi + ').'
     });
   } catch (erro) {
@@ -179,7 +177,7 @@ function testarGravacao() {
   var retorno = doPost({
     postData: {
       contents: JSON.stringify({
-        nome: 'TESTE — apagar', turma: 'TESTE', versao: 'teste', duracaoSeg: 1,
+        nome: 'TESTE — apagar', versao: 'teste', duracaoSeg: 1,
         respostas: respostas, enviadoEm: new Date().toISOString()
       })
     }

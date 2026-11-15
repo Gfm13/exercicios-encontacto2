@@ -76,7 +76,7 @@ function executarPagina(html) {
 
   const fabrica = new Function(
     'document', 'localStorage', 'location', 'confirm', 'fetch',
-    script[1] + '\nreturn { norm, strip };'
+    script[1] + '\nreturn { norm, strip, comecar, abrirPortada, abrirConteudo };'
   );
   const api = fabrica(documento, localStorage, { search: '' }, () => true, () => Promise.reject(new Error('sem rede')));
 
@@ -153,20 +153,23 @@ checar(notaCheia.detalhes.every((d) => d.ex && d.pergunta && d.resposta), 'cada 
 console.log('\n5. Validação do envio');
 const lancar = (fn) => { try { fn(); return null; } catch (e) { return e.message; } };
 checar(!!lancar(() => gs.validarEnvio(null)), 'envio vazio é recusado');
-checar(!!lancar(() => gs.validarEnvio({ turma: '2º B', respostas: {} })), 'envio sem nome é recusado');
-checar(!!lancar(() => gs.validarEnvio({ nome: 'Ana', respostas: {} })), 'envio sem turma é recusado');
-checar(!!lancar(() => gs.validarEnvio({ nome: 'Ana', turma: '2º B' })), 'envio sem respostas é recusado');
+checar(!!lancar(() => gs.validarEnvio({ respostas: {} })), 'envio sem nome é recusado');
+checar(!!lancar(() => gs.validarEnvio({ nome: 'Ana' })), 'envio sem respostas é recusado');
 
-const limpo = gs.validarEnvio({ nome: '  Ana Souza  ', turma: ' 2º B ', respostas: { '1.1': 'hablé' } });
-checar(limpo.nome === 'Ana Souza' && limpo.turma === '2º B', 'nome e turma são aparados', JSON.stringify(limpo));
+const limpo = gs.validarEnvio({ nome: '  Ana Souza  ', respostas: { '1.1': 'hablé' } });
+checar(limpo.nome === 'Ana Souza', 'nome é aparado', JSON.stringify(limpo.nome));
+checar(limpo.turma === undefined, 'turma não é exigida nem devolvida');
 
 const muitas = {};
 for (let i = 0; i < 301; i++) muitas['x' + i] = 'a';
-checar(!!lancar(() => gs.validarEnvio({ nome: 'Ana', turma: '2º B', respostas: muitas })), 'envio com respostas demais é recusado');
+checar(!!lancar(() => gs.validarEnvio({ nome: 'Ana', respostas: muitas })), 'envio com respostas demais é recusado');
 
 console.log('\n6. Configuração da página');
-checar(/const ENVIO_URL = "";/.test(html), 'ENVIO_URL está declarada (vazia até configurar)');
-checar(/id="nome"/.test(html) && /id="turma"/.test(html), 'campos de nome e turma existem');
+checar(/const ENVIO_URL = "https:\/\/script\.google\.com\/macros\/s\/[^"]+\/exec";/.test(html), 'ENVIO_URL aponta para uma implantação /exec');
+checar(/id="nome"/.test(html) && /id="portada"/.test(html), 'tela de entrada com o campo de nome');
+checar(/id="conteudo" hidden/.test(html), 'conteúdo começa escondido até o aluno se identificar');
+checar(/id="comecar"/.test(html) && /id="continuar"/.test(html), 'botões «Comenzar» e «Continuar» existem');
+checar(/id="mostra-nome"/.test(html), 'barra do aluno mostra o nome');
 checar(/id="enviar"/.test(html), 'botão de envio existe');
 checar(/envioId/.test(html), 'envio leva um identificador (evita linha duplicada em retry)');
 checar(html.includes('Comprobar') && html.includes('Ver soluciones') && html.includes('Borrar todo'), 'botões originais preservados');
@@ -178,6 +181,27 @@ console.log('\n7. Sintaxe dos arquivos do Apps Script');
 });
 const manifesto = lancar(() => JSON.parse(ler('apps-script', 'appsscript.json')));
 checar(!manifesto, 'appsscript.json é JSON válido', manifesto || '');
+
+console.log('\n8. Fluxo da tela de entrada');
+const pagina = executarPagina(html);
+const no = (id) => pagina.documento.getElementById(id);
+
+checar(no('portada').hidden === false && no('conteudo').hidden === true, 'abre na tela de entrada, com o conteúdo escondido');
+
+no('nome').value = '  Ana Souza  ';
+pagina.api.comecar();
+checar(no('portada').hidden === true && no('conteudo').hidden === false, 'Comenzar libera o conteúdo');
+checar(no('mostra-nome').textContent === 'Ana Souza', 'a barra mostra o nome sem espaços sobrando', JSON.stringify(no('mostra-nome').textContent));
+
+const voltar = executarPagina(html);
+const noVoltar = (id) => voltar.documento.getElementById(id);
+noVoltar('nome').value = 'A';
+voltar.api.comecar();
+checar(noVoltar('portada').hidden === false && /nombre/i.test(noVoltar('portada-msg').textContent), 'nome curto mantém a entrada e avisa');
+
+noVoltar('nome').value = 'Bruno';
+voltar.api.abrirPortada(true);
+checar(noVoltar('portada-msg').textContent === '', 'trocar de nome limpa o aviso anterior');
 
 console.log('');
 if (falhas) {

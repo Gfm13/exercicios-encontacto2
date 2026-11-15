@@ -15,10 +15,11 @@ aluno → index.html (GitHub Pages)
         Apps Script (Google) ──► planilha: abas "Envios" e "Respostas"
 ```
 
-A página corrige na hora (verde / amarelo = só o acento / vermelho) e guarda as
-respostas no navegador. O envio é opcional e manual: só quando o aluno clica é que
-nome, curso e respostas vão para a planilha. A nota é recalculada no servidor a
-partir do gabarito, que fica no Apps Script.
+A página abre numa tela inicial que pede só o nome; o conteúdo vem depois. Ela corrige
+na hora (verde / amarelo = só o acento / vermelho) e guarda nome e respostas no
+navegador. O envio é opcional e manual: só quando o aluno clica é que nome e respostas
+vão para a planilha. A nota é recalculada no servidor a partir do gabarito, que fica no
+Apps Script.
 
 ## Estrutura
 
@@ -27,7 +28,7 @@ partir do gabarito, que fica no Apps Script.
 | `index.html` | Página do questionário (explicação + 7 exercícios + envio) |
 | `apps-script/Codigo.gs` | Recebe o POST, grava nas abas e responde a nota |
 | `apps-script/Correcao.gs` | Compara respostas com o gabarito (funções puras) |
-| `apps-script/Validacao.gs` | Valida nome, turma e formato do envio |
+| `apps-script/Validacao.gs` | Valida o nome e o formato do envio |
 | `apps-script/Gabarito.gs` | **Gerado** a partir do `index.html` — não editar à mão |
 | `apps-script/appsscript.json` | Manifesto (fuso de São Paulo, app da web público) |
 | `ferramentas/gerar-gabarito.mjs` | Regenera `Gabarito.gs` a partir do `index.html` |
@@ -55,6 +56,6 @@ Detalhes na Parte 7 do [GUIA.md](GUIA.md).
 
 ## Privacidade
 
-A página pede apenas nome e curso, e avisa a finalidade. A nota é recalculada no
+A página pede apenas o nome, e avisa a finalidade. A nota é recalculada no
 servidor; o gabarito não vem do navegador. Nada de dado de aluno é versionado no
 repositório.

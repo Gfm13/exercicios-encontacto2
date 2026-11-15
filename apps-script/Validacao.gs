@@ -4,7 +4,7 @@
  * teste local aceite e recuse exatamente o que a produção aceita e recusa.
  */
 
-var LIMITES_ENVIO = { NOME: 80, TURMA: 40, RESPOSTAS: 300 };
+var LIMITES_ENVIO = { NOME: 80, RESPOSTAS: 300 };
 
 function textoLimpo(valor, maximo) {
   return String(valor == null ? '' : valor).trim().slice(0, maximo);
@@ -12,16 +12,14 @@ function textoLimpo(valor, maximo) {
 
 /**
  * Lança Error com mensagem em português quando o envio não serve.
- * Devolve { nome, turma, respostas } já aparado.
+ * Devolve { nome, respostas } já aparado.
  */
 function validarEnvio(d) {
   if (!d || typeof d !== 'object') throw new Error('Envio vazio.');
 
   var nome = textoLimpo(d.nome, LIMITES_ENVIO.NOME);
-  var turma = textoLimpo(d.turma, LIMITES_ENVIO.TURMA);
 
   if (nome.length < 2) throw new Error('Informe o nome do aluno.');
-  if (!turma) throw new Error('Informe a turma.');
   if (!d.respostas || typeof d.respostas !== 'object' || Array.isArray(d.respostas)) {
     throw new Error('Respostas ausentes.');
   }
@@ -29,5 +27,5 @@ function validarEnvio(d) {
     throw new Error('Respostas demais para um envio.');
   }
 
-  return { nome: nome, turma: turma, respostas: d.respostas };
+  return { nome: nome, respostas: d.respostas };
 }

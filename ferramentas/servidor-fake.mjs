@@ -67,7 +67,7 @@ const servidor = http.createServer(async (req, res) => {
       const respondidas = Object.values(limpo.respostas).filter((v) => String(v).trim()).length;
 
       console.log('\n--- envio recebido ---');
-      console.log('nome: ' + limpo.nome + ' | turma: ' + limpo.turma);
+      console.log('nome: ' + limpo.nome);
       console.log('respondidas: ' + respondidas + '/' + nota.total);
       console.log('acertos: ' + nota.acertos + ' | quase: ' + nota.casi + ' | duração: ' + dados.duracaoSeg + 's');
       if (typeof dados.acertosLocal === 'number' && dados.acertosLocal !== nota.acertos) {

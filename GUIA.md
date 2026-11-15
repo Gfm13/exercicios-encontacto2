@@ -17,13 +17,13 @@ leva 2 minutos.
 | O recebimento das respostas | Google Apps Script | R$ 0 |
 | As respostas | planilha Google da professora | R$ 0 |
 
-Fluxo: aluno abre o link → preenche nome e curso → faz os exercícios → clica em
-«Enviar respuestas a la profesora» → a planilha ganha uma linha com nome, curso,
+Fluxo: aluno abre o link → escreve o nome na tela inicial → faz os exercícios →
+clica em «Enviar respuestas a la profesora» → a planilha ganha uma linha com nome,
 acertos e todas as respostas.
 
 ## O que já está pronto neste repositório
 
-- `index.html` — a página, com o bloco de identificação e o botão de envio.
+- `index.html` — a página: tela inicial com o nome, explicação, exercícios e envio.
 - `apps-script/` — os quatro arquivos que vão para o Google Apps Script.
 - `ferramentas/` — gerador do gabarito, testes e um servidor local para testar.
 - `GUIA.md` — este guia.
@@ -92,9 +92,24 @@ Abre o editor de código, com um arquivo `Code.gs` contendo `function myFunction
 
 ## Teste sem a página (recomendado)
 
-- [ ] No editor, escolha a função `testarGravacao` na lista de funções → **Executar**
-- [ ] Volte na planilha: deve existir uma linha `TESTE — apagar` nas abas **Envios** e **Respostas**
+Este teste grava um envio fictício com todas as respostas certas — serve para saber se
+planilha, gabarito e correção estão funcionando antes de envolver a turma.
+
+- [ ] No editor do Apps Script, olhe a **barra de ferramentas** (acima do código): há um
+      seletor de funções que normalmente mostra `doGet` ou `myFunction`
+- [ ] Clique nele e escolha **`testarGravacao`**
+- [ ] Clique em **▷ Executar** (ao lado daquele seletor, não no azul "Implantar")
+- [ ] Na primeira vez o Google pede autorização: **Revisar permissões** → escolha a conta
+      → **Avançado** → **Acessar… (não seguro)** → **Permitir**
+- [ ] Abra o **Registro de execução** (parte de baixo da tela): deve aparecer
+      `{"ok":true,"acertos":64,"total":64,...}`
+- [ ] Volte na planilha: deve existir uma linha `TESTE — apagar` nas abas **Envios** e
+      **Respostas**
 - [ ] Apague essas linhas de teste
+
+> Se as abas já existiam de um teste antigo e o cabeçalho ainda tem a coluna *Turma*,
+> apague as abas **Envios** e **Respostas** inteiras: elas são recriadas com o cabeçalho
+> certo no próximo envio.
 
 Se isso funcionou, o lado do Google está pronto.
 
@@ -102,19 +117,14 @@ Se isso funcionou, o lado do Google está pronto.
 
 # Parte 3 — Conectar a página ao Apps Script
 
-O `index.html` tem uma linha quase no topo do `<script>`:
-
-```js
-const ENVIO_URL = "";
-```
-
-- [ ] Troque pelo endereço copiado, mantendo as aspas:
+O `index.html` já aponta para a implantação criada em 15/11/2026:
 
 ```js
 const ENVIO_URL = "https://script.google.com/macros/s/AKfy.../exec";
 ```
 
-Duas formas de salvar essa alteração:
+Se você **recriar** o App da Web (nova implantação gera outra URL), é só trocar essa
+linha pela URL nova, mantendo as aspas. Duas formas de salvar:
 
 **Pelo site do GitHub (sem instalar nada)**
 - [ ] Abra o `index.html` no repositório → ícone de **lápis** (Edit)
@@ -128,10 +138,12 @@ Depois do commit, o Pages republica sozinho em ~1 minuto.
 ## Teste de ponta a ponta
 
 - [ ] Abra o link do Pages no celular ou no computador
-- [ ] Escreva nome e curso, responda algumas questões (não precisa responder tudo)
+- [ ] Escreva seu nome na tela "Antes de empezar" e clique **Comenzar**
+- [ ] Responda algumas questões (não precisa responder tudo)
 - [ ] Pressione **Enviar respuestas a la profesora**
 - [ ] A página deve mostrar "Recibido…"; a planilha deve ganhar a linha em **Envios**
 - [ ] Apague a linha de teste
+- [ ] Recarregue a página: ela deve oferecer **Continuar** com o mesmo nome
 
 ---
 
@@ -139,9 +151,22 @@ Depois do commit, o Pages republica sozinho em ~1 minuto.
 
 - [ ] Compartilhe o link `https://gfm13.github.io/exercicios-encontacto2/`
       (no Google Classroom, no grupo da turma, ou como QR code)
-- [ ] Peça que cada aluno preencha **nome completo** e **curso** antes de enviar
-- [ ] A página guarda as respostas no próprio navegador: se o aluno atualizar ou cair
-      a internet, ele não perde o que já escreveu
+- [ ] Peça que cada aluno escreva o **nome completo** na primeira tela e clique **Comenzar**
+
+## A tela de entrada e o cache
+
+A página abre numa tela **"Antes de empezar"** que pede só o nome; o conteúdo aparece
+depois do **Comenzar**. O nome e as respostas ficam guardados no navegador do aluno:
+
+- se ele recarregar a página ou cair a internet, volta onde estava;
+- se ele sair e voltar no mesmo aparelho, a tela oferece **Continuar**;
+- no botão **Cambiar** (barra do topo) ele pode corrigir o nome. Se digitar outro nome
+  e já houver respostas guardadas, a página pergunta se é para começar de zero — útil
+  quando dois alunos usam o mesmo computador.
+
+O que **não** fica guardado é o envio: só vai para a planilha quando o aluno clica em
+**Enviar respuestas a la profesora**. Ele pode enviar mais de uma vez (novas tentativas
+viram novas linhas; a última é a mais recente).
 
 Sobre o link: a página tem `<meta name="robots" content="noindex">`, então não aparece
 no Google. Quem tem o link, entra — o que é esperado para uma atividade.
@@ -150,19 +175,18 @@ no Google. Quem tem o link, entra — o que é esperado para uma atividade.
 
 Duas abas na planilha:
 
-- **Envios** — uma linha por envio: data/hora, nome, turma, acertos, "quase" (acertou
-  só errando o acento), total, %, duração e versão. É a visão de nota.
-- **Respostas** — uma linha por resposta: nome, turma, exercício, número da questão,
-  a pergunta, o que o aluno escreveu, a resposta certa e o status
-  (`ok`, `casi`, `erro`, `vazio`). É a visão de diagnóstico: mostra exatamente o que
-  a turma errou.
+- **Envios** — uma linha por envio: data/hora, nome, acertos, "quase" (acertou só
+  errando o acento), total, %, duração e versão. É a visão de nota.
+- **Respostas** — uma linha por resposta: nome, exercício, número da questão, a
+  pergunta, o que o aluno escreveu, a resposta certa e o status (`ok`, `casi`, `erro`,
+  `vazio`). É a visão de diagnóstico: mostra exatamente o que a turma errou.
 
 Atalhos úteis:
 
-- Filtrar por turma: selecione o cabeçalho de **Envios** e use
-  **Dados → Criar filtro**; depois filtre a coluna Turma.
-- Contar envios de uma turma: `=COUNTIF(Envios!D:D;"2º B")`
-- Média de acertos da turma: `=AVERAGEIF(Envios!D:D;"2º B";Envios!E:E)`
+- Filtrar por aluno: selecione o cabeçalho de **Envios** e use
+  **Dados → Criar filtro**; depois filtre a coluna Nome.
+- Contar quantos envios chegaram: `=COUNTA(Envios!C2:C)`
+- Média de acertos: `=AVERAGE(Envios!D2:D)`
 - Se o aluno enviar duas vezes, cada envio vira uma linha — a última data é a
   tentativa mais recente (a aba **Envios** é ordenada pela ordem de chegada).
 
@@ -241,7 +265,7 @@ resposta ficou vazia ou se a página e o servidor passaram a discordar.
 
 # Parte 8 — Privacidade (LGPD)
 
-- A página pede **nome** e **curso** — nada além disso. Não peça CPF, nascimento,
+- A página pede apenas o **nome** — nada além disso. Não peça CPF, nascimento,
   telefone ou endereço.
 - O texto na página já avisa que as respostas vão para a professora.
 - Os dados ficam no Google (fora do Brasil) e o link do Pages é público;
