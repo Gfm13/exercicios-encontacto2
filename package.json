@@ -1,0 +1,6 @@
+{
+  "name": "exercicios-encontacto2",
+  "description": "Questionário de espanhol (En Contacto 2) publicado no GitHub Pages, com envio das respostas para uma planilha Google via Apps Script.",
+  "private": true,
+  "type": "module"
+}

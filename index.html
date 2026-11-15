@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Pretérito indefinido: explicación y ejercicios</title>
+<style>
+:root{--bg:#faf8f4;--card:#fff;--tx:#222;--mu:#666;--ac:#c2410c;--ln:#e5e0d6;--hd:#fdebd9;--ok:#15803d;--okb:#dcfce7;--wa:#a16207;--wab:#fef9c3;--ba:#b91c1c;--bab:#fee2e2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17150f;--card:#221f17;--tx:#eee9de;--mu:#a9a392;--ac:#fb923c;--ln:#3a3528;--hd:#3a2a18;--ok:#86efac;--okb:#14351f;--wa:#fde047;--wab:#3a3210;--ba:#fca5a5;--bab:#451a1a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17150f;--card:#221f17;--tx:#eee9de;--mu:#a9a392;--ac:#fb923c;--ln:#3a3528;--hd:#3a2a18;--ok:#86efac;--okb:#14351f;--wa:#fde047;--wab:#3a3210;--ba:#fca5a5;--bab:#451a1a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.6 Georgia,"Times New Roman",serif}
+main{max-width:820px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:2rem;margin:.2em 0;color:var(--ac)}
+h2{font-size:1.4rem;margin:1.6em 0 .4em;border-bottom:2px solid var(--ac);padding-bottom:4px}
+h3{font-size:1.05rem;margin:1.2em 0 .3em}
+p.sub{color:var(--mu);margin-top:0}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px 16px;margin:12px 0}
+.tw{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;min-width:420px;font-family:system-ui,sans-serif;font-size:.92rem;background:var(--card)}
+th,td{border:1px solid var(--ln);padding:6px 10px;text-align:left}
+th{background:var(--hd)}
+td b,.e{color:var(--ac)}
+.note{font-family:system-ui,sans-serif;font-size:.9rem;color:var(--mu)}
+.tag{display:inline-block;background:var(--hd);border-radius:6px;padding:1px 8px;margin:2px;font-family:system-ui,sans-serif;font-size:.88rem}
+.ex{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:8px 16px 14px;margin:12px 0}
+ol{padding-left:1.4em}
+li{margin:9px 0;line-height:2.1}
+.story{line-height:2.3}
+input,select{font:inherit;font-size:.95em;border:2px solid var(--ln);border-radius:6px;padding:1px 6px;background:var(--bg);color:var(--tx);margin:0 3px;max-width:100%}
+input:focus,select:focus{outline:none;border-color:var(--ac)}
+.v{color:var(--mu);font-size:.85em;font-family:system-ui,sans-serif}
+.ok{border-color:var(--ok)!important;background:var(--okb)!important}
+.wa{border-color:var(--wa)!important;background:var(--wab)!important}
+.ba{border-color:var(--ba)!important;background:var(--bab)!important}
+button{font:600 .9rem system-ui,sans-serif;background:var(--ac);color:#fff;border:0;border-radius:8px;padding:8px 14px;margin:4px 6px 0 0;cursor:pointer}
+button.g{background:transparent;color:var(--ac);border:2px solid var(--ac)}
+.sc{font:600 .95rem system-ui,sans-serif;margin-left:6px}
+/* --- identificación y envío --- */
+.aluno{display:grid;grid-template-columns:1.6fr 1fr;gap:10px;margin-top:6px}
+@media (max-width:520px){.aluno{grid-template-columns:1fr}}
+.aluno label{display:block;font:600 .82rem system-ui,sans-serif;color:var(--mu);margin-bottom:3px}
+.aluno input{width:100%;box-sizing:border-box;margin:0}
+.sep{border:0;border-top:1px solid var(--ln);margin:14px 0 6px}
+#enviar{background:var(--ok)}
+#enviar[disabled]{opacity:.55;cursor:progress}
+.msg{display:block;font:600 .9rem system-ui,sans-serif;margin-top:8px;line-height:1.45}
+.msg-ok{color:var(--ok)}
+.msg-erro{color:var(--ba)}
+.msg-info{color:var(--mu)}
+</style>
+</head>
+<body>
+<main>
+<h1>Pretérito indefinido</h1>
+<p class="sub">(también llamado pretérito perfecto simple) · Explicación, tablas y ejercicios</p>
+
+<div class="card" id="aluno">
+<h3 style="margin-top:0">Identificación</h3>
+<div class="aluno">
+<div><label for="nome">Nombre y apellido</label><input id="nome" type="text" autocomplete="name" maxlength="80" placeholder="Ej.: Ana Souza"></div>
+<div><label for="turma">Curso / clase</label><input id="turma" type="text" autocomplete="off" maxlength="40" placeholder="Ej.: 2º B"></div>
+</div>
+<p class="note" style="margin:8px 0 0">Al final pulsa «Enviar respuestas a la profesora». Solo se envían tu nombre, tu curso y tus respuestas, para el seguimiento de la clase.</p>
+</div>
+
+<h2>1. ¿Cuándo se usa?</h2>
+<div class="card">
+<p>Usamos el <b>pretérito indefinido</b> para hablar de acciones <b>terminadas</b> en un momento concreto del pasado, que ya no tienen relación con el presente:</p>
+<ul>
+<li>Acciones puntuales: <i>Ayer <span class="e">compré</span> un libro.</i></li>
+<li>Acciones que se suceden (narración): <i>Entré, saludé y me <span class="e">senté</span>.</i></li>
+<li>Acciones con duración, pero cerradas: <i>Viví en Madrid dos años.</i></li>
+<li>Comienzo o final de una acción: <i>La película <span class="e">empezó</span> a las ocho.</i></li>
+</ul>
+<p><b>Marcadores temporales:</b>
+<span class="tag">ayer</span><span class="tag">anteayer</span><span class="tag">anoche</span><span class="tag">el otro día</span><span class="tag">el lunes / el mes pasado</span><span class="tag">la semana pasada</span><span class="tag">el año pasado</span><span class="tag">hace dos días</span><span class="tag">en 2010</span><span class="tag">de repente</span><span class="tag">entonces</span></p>
+</div>
+
+<h2>2. Verbos regulares</h2>
+<p class="note">Se quita -ar, -er o -ir y se añaden estas terminaciones. Los verbos en -er e -ir comparten terminaciones.</p>
+<div class="tw"><table>
+<tr><th>Persona</th><th>hablar (-ar)</th><th>comer (-er)</th><th>vivir (-ir)</th></tr>
+<tr><td>yo</td><td>habl<b>é</b></td><td>com<b>í</b></td><td>viv<b>í</b></td></tr>
+<tr><td>tú</td><td>habl<b>aste</b></td><td>com<b>iste</b></td><td>viv<b>iste</b></td></tr>
+<tr><td>él / ella / usted</td><td>habl<b>ó</b></td><td>com<b>ió</b></td><td>viv<b>ió</b></td></tr>
+<tr><td>nosotros/as</td><td>habl<b>amos</b></td><td>com<b>imos</b></td><td>viv<b>imos</b></td></tr>
+<tr><td>vosotros/as</td><td>habl<b>asteis</b></td><td>com<b>isteis</b></td><td>viv<b>isteis</b></td></tr>
+<tr><td>ellos / ellas / ustedes</td><td>habl<b>aron</b></td><td>com<b>ieron</b></td><td>viv<b>ieron</b></td></tr>
+</table></div>
+<p class="note">Atención a las tildes: <i>hablé, habló, comí, comió, viví, vivió</i>. Las formas <i>nosotros</i> de -ar e -ir coinciden con el presente (<i>hablamos, vivimos</i>); el contexto temporal ayuda a distinguirlas.</p>
+
+<h2>3. Verbos irregulares</h2>
+<h3>3.1 Ser e ir (idénticos), dar y ver</h3>
+<div class="tw"><table>
+<tr><th>Persona</th><th>ser / ir</th><th>dar</th><th>ver</th></tr>
+<tr><td>yo</td><td><b>fui</b></td><td>di</td><td>vi</td></tr>
+<tr><td>tú</td><td><b>fuiste</b></td><td>diste</td><td>viste</td></tr>
+<tr><td>él / ella</td><td><b>fue</b></td><td>dio</td><td>vio</td></tr>
+<tr><td>nosotros</td><td><b>fuimos</b></td><td>dimos</td><td>vimos</td></tr>
+<tr><td>vosotros</td><td><b>fuisteis</b></td><td>disteis</td><td>visteis</td></tr>
+<tr><td>ellos</td><td><b>fueron</b></td><td>dieron</td><td>vieron</td></tr>
+</table></div>
+<p class="note">Sin tilde en ninguna forma de estos verbos (<i>fue, dio, vio, di, vi</i>). Dar y ver llevan las terminaciones de -er/-ir.</p>
+
+<h3>3.2 Raíz irregular (terminaciones sin tilde)</h3>
+<p class="note">Terminaciones: <b>-e, -iste, -o, -imos, -isteis, -ieron</b>. Si la raíz acaba en <b>j</b> (decir, traer, conducir), la forma «ellos» es <b>-eron</b>.</p>
+<div class="tw"><table>
+<tr><th>Infinitivo</th><th>Raíz</th><th>yo</th><th>él / ella</th><th>ellos</th></tr>
+<tr><td>estar</td><td>estuv-</td><td>estuve</td><td>estuvo</td><td>estuvieron</td></tr>
+<tr><td>tener</td><td>tuv-</td><td>tuve</td><td>tuvo</td><td>tuvieron</td></tr>
+<tr><td>poder</td><td>pud-</td><td>pude</td><td>pudo</td><td>pudieron</td></tr>
+<tr><td>poner</td><td>pus-</td><td>puse</td><td>puso</td><td>pusieron</td></tr>
+<tr><td>saber</td><td>sup-</td><td>supe</td><td>supo</td><td>supieron</td></tr>
+<tr><td>querer</td><td>quis-</td><td>quise</td><td>quiso</td><td>quisieron</td></tr>
+<tr><td>venir</td><td>vin-</td><td>vine</td><td>vino</td><td>vinieron</td></tr>
+<tr><td>hacer</td><td>hic-</td><td>hice</td><td>hizo (¡con z!)</td><td>hicieron</td></tr>
+<tr><td>decir</td><td>dij-</td><td>dije</td><td>dijo</td><td>dijeron</td></tr>
+<tr><td>traer</td><td>traj-</td><td>traje</td><td>trajo</td><td>trajeron</td></tr>
+<tr><td>conducir</td><td>conduj-</td><td>conduje</td><td>condujo</td><td>condujeron</td></tr>
+</table></div>
+
+<h3>3.3 Cambio vocálico (solo verbos en -ir) y verbos con «y»</h3>
+<p class="note">En las terceras personas (él/ella y ellos) los verbos en -ir cambian e→i u o→u. Las demás personas son regulares.</p>
+<div class="tw"><table>
+<tr><th>Cambio</th><th>Infinitivo</th><th>él / ella</th><th>ellos</th></tr>
+<tr><td>e → i</td><td>pedir</td><td>p<b>i</b>dió</td><td>p<b>i</b>dieron</td></tr>
+<tr><td>e → i</td><td>seguir</td><td>s<b>i</b>guió</td><td>s<b>i</b>guieron</td></tr>
+<tr><td>e → i</td><td>preferir</td><td>pref<b>i</b>rió</td><td>pref<b>i</b>rieron</td></tr>
+<tr><td>o → u</td><td>dormir</td><td>d<b>u</b>rmió</td><td>d<b>u</b>rmieron</td></tr>
+<tr><td>o → u</td><td>morir</td><td>m<b>u</b>rió</td><td>m<b>u</b>rieron</td></tr>
+<tr><td>i → y</td><td>leer</td><td>le<b>y</b>ó</td><td>le<b>y</b>eron</td></tr>
+<tr><td>i → y</td><td>construir</td><td>constru<b>y</b>ó</td><td>constru<b>y</b>eron</td></tr>
+<tr><td>i → y</td><td>caer</td><td>ca<b>y</b>ó</td><td>ca<b>y</b>eron</td></tr>
+</table></div>
+<p class="note">Los verbos en -er con vocal + «ió/ieron» cambian a «yó/yeron»: leer, creer, caer, oír, construir… Además, <i>yo</i> y <i>tú</i> llevan tilde: <i>leí, leíste</i>.</p>
+
+<h3>3.4 Cambios ortográficos en la persona «yo»</h3>
+<div class="tw"><table>
+<tr><th>Terminación</th><th>Cambio</th><th>Ejemplos (yo)</th></tr>
+<tr><td>-car</td><td>c → qu</td><td>buscar → bus<b>qu</b>é · tocar → to<b>qu</b>é</td></tr>
+<tr><td>-gar</td><td>g → gu</td><td>llegar → lle<b>gu</b>é · pagar → pa<b>gu</b>é</td></tr>
+<tr><td>-zar</td><td>z → c</td><td>empezar → empe<b>c</b>é · almorzar → almor<b>c</b>é</td></tr>
+</table></div>
+
+<h2>4. Ejercicios</h2>
+<p class="note">Escribe la forma correcta en cada hueco. Pulsa «Comprobar» en cada bloque. Verde = correcto · amarillo = casi (revisa la tilde) · rojo = incorrecto. Con «Ver soluciones» se rellenan todas las respuestas. Cuando termines, pulsa «Enviar respuestas a la profesora», al final de la página.</p>
+<div id="ex"></div>
+<div class="card">
+<button id="all">Comprobar todo</button>
+<button id="sol" class="g">Ver soluciones</button>
+<button id="rst" class="g">Borrar todo</button>
+<span class="sc" id="tot"></span>
+<hr class="sep">
+<button id="enviar">Enviar respuestas a la profesora</button>
+<span id="status" class="msg msg-info" role="status" aria-live="polite"></span>
+</div>
+</main>
+
+<script>
+/* ------------------------------------------------------------------
+   Endereço de envio (Google Apps Script). Cole aqui a URL que termina
+   em /exec — o passo a passo está no GUIA.md, parte 3.
+   Enquanto estiver vazio, a página funciona normalmente, só não envia.
+   ------------------------------------------------------------------ */
+const ENVIO_URL = "";
+
+const VERSAO = "encontacto2/pret-indefinido/v1";
+const CHAVE = "encontacto2.pret-indefinido.v1";
+
+const S=[
+{t:"Ejercicio 1 · Verbos regulares",i:"Conjuga el verbo entre paréntesis.",q:[
+"Ayer yo {hablar|hablé} con mi profesora.",
+"Tú {comer|comiste} paella el sábado.",
+"Ella {vivir|vivió} en Lisboa en 2019.",
+"Nosotros {estudiar|estudiamos} toda la noche.",
+"Vosotros {escribir|escribisteis} una carta anoche.",
+"Ellos {beber|bebieron} agua después del partido.",
+"Anoche yo {cantar|canté} en el karaoke.",
+"El año pasado mi hermana {aprender|aprendió} a nadar.",
+"Ustedes {abrir|abrieron} la ventana hace un momento.",
+"Tú {llegar|llegaste} tarde a clase el lunes.",
+"Nosotros {salir|salimos} de casa a las ocho.",
+"Ellas {visitar|visitaron} el museo la semana pasada."]},
+{t:"Ejercicio 2 · Ser, ir, dar y ver",i:"Recuerda: ser e ir tienen las mismas formas.",q:[
+"Yo {ir|fui} al cine ayer.",
+"Cervantes {ser|fue} un gran escritor.",
+"Nosotros {ir|fuimos} a la playa el verano pasado.",
+"Mi tía me {dar|dio} un regalo por mi cumpleaños.",
+"Anoche yo {ver|vi} una película de terror.",
+"Vosotros {ser|fuisteis} muy amables con nosotros.",
+"Ellos {ver|vieron} el partido en casa de un amigo.",
+"Tú {dar|diste} un paseo por el parque ayer."]},
+{t:"Ejercicio 3 · Raíz irregular",i:"Usa la raíz irregular y las terminaciones sin tilde.",q:[
+"Yo {tener|tuve} que estudiar el fin de semana.",
+"Ella {hacer|hizo} la tarea antes de cenar.",
+"Nosotros {estar|estuvimos} en casa toda la tarde.",
+"Los alumnos {decir|dijeron} la verdad.",
+"Tú {poder|pudiste} venir a la fiesta, ¿verdad?",
+"Ayer yo {poner|puse} la mesa para la cena.",
+"Vosotros {venir|vinisteis} muy pronto.",
+"Él {querer|quiso} hablar con el director.",
+"Yo {saber|supe} la noticia anoche.",
+"Ellas {traer|trajeron} la comida para todos.",
+"Nosotros {hacer|hicimos} un pastel el domingo.",
+"Yo le {decir|dije} la verdad a mi madre."]},
+{t:"Ejercicio 4 · Cambio vocálico y verbos con «y»",i:"Cuidado: no todas las personas cambian.",q:[
+"Ella {dormir|durmió} doce horas el sábado.",
+"Ellos {pedir|pidieron} la cuenta al camarero.",
+"Él {preferir|prefirió} quedarse en casa.",
+"Yo {leer|leí} tres libros en vacaciones.",
+"Ella {leer|leyó} el poema en voz alta.",
+"Los obreros {construir|construyeron} el puente en 1990.",
+"Nosotros {dormir|dormimos} en un hotel pequeño.",
+"El abuelo {morir|murió} hace dos años.",
+"Los coches {seguir|siguieron} al camión.",
+"El vaso {caer|cayó} al suelo de repente."]},
+{t:"Ejercicio 5 · Cambios ortográficos (yo)",i:"Escribe la forma de «yo».",q:[
+"Ayer yo {buscar|busqué} mis llaves por toda la casa.",
+"El lunes yo {llegar|llegué} a las nueve.",
+"Yo {empezar|empecé} el curso en marzo.",
+"Anoche yo {tocar|toqué} la guitarra.",
+"Yo {pagar|pagué} la cuenta del restaurante.",
+"Ayer yo {almorzar|almorcé} con mis abuelos."]},
+{t:"Ejercicio 6 · Elige la forma correcta",i:"Selecciona la opción adecuada según el marcador temporal.",q:[
+"Ayer Marta {?fue/va/iba|fue} al supermercado.",
+"El mes pasado nosotros {?viajamos/viajaremos/viajábamos|viajamos} a Madrid.",
+"Anoche yo no {?dormí/duermo/dormía|dormí} bien.",
+"Hace dos años ellos {?vendieron/venden/vendían|vendieron} la casa.",
+"El verano pasado tú {?hiciste/haces/hacías|hiciste} muchos amigos.",
+"De repente, {?se apagó/se apaga/se apagaba|se apagó} la luz.",
+"Anteayer mis primos {?vinieron/vienen/venían|vinieron} a cenar."]},
+{t:"Ejercicio 7 · Texto: Mi fin de semana",i:"Completa el texto con el pretérito indefinido.",story:1,q:[
+"El sábado pasado {levantarse, yo|me levanté} temprano. {Desayunar, yo|Desayuné} con mi familia y después {ir, nosotros|fuimos} a la playa. Mi hermano {hacer|hizo} castillos de arena y yo {leer|leí} un libro. Por la tarde {comer, nosotros|comimos} pescado y mis padres {pedir|pidieron} un postre. Por la noche {dormir, yo|dormí} muy bien porque {estar, yo|estuve} cansadísima."]}
+];
+
+const norm=s=>s.trim().toLowerCase().replace(/\s+/g,' ');
+const strip=s=>norm(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const porId=id=>document.getElementById(id);
+const campos=()=>[...document.querySelectorAll('[data-qid]')];
+
+function build(t,base){
+ let n=0;
+ return t.replace(/\{([^}]+)\}/g,(m,x)=>{
+  n++;
+  const qid=base+(n>1?'_'+n:'');
+  const[h,a]=x.split('|');
+  if(h[0]=='?'){const o=h.slice(1).split('/').sort(()=>0);return '<select data-qid="'+qid+'" data-a="'+a+'"><option value="">…</option>'+o.map(v=>'<option>'+v+'</option>').join('')+'</select>';}
+  return '<input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" data-qid="'+qid+'" data-a="'+a+'" size="'+Math.max(6,a.length+1)+'"><span class="v">('+h+')</span>';});
+}
+
+const root=document.getElementById('ex');
+S.forEach((s,k)=>{
+ const d=document.createElement('div');d.className='ex';d.id='s'+k;
+ d.innerHTML='<h3>'+s.t+'</h3><p class="note">'+s.i+'</p>'+
+ (s.story?'<p class="story">'+build(s.q[0],(k+1)+'.1')+'</p>':'<ol>'+s.q.map((x,i)=>'<li>'+build(x,(k+1)+'.'+(i+1))+'</li>').join('')+'</ol>')+
+ '<button data-c="'+k+'">Comprobar</button><span class="sc"></span>';
+ root.appendChild(d);
+});
+
+function check(d){
+ let ok=0,n=0;
+ d.querySelectorAll('[data-a]').forEach(f=>{
+  n++;f.classList.remove('ok','wa','ba');
+  const v=f.value,a=f.dataset.a;
+  if(!v.trim()){return;}
+  if(norm(v)==norm(a)){f.classList.add('ok');ok++;}
+  else if(strip(v)==strip(a)){f.classList.add('wa');}
+  else f.classList.add('ba');
+ });
+ const sc=d.querySelector('.sc');if(sc)sc.textContent=ok+' / '+n;
+ return[ok,n];
+}
+function total(){let o=0,n=0;document.querySelectorAll('.ex').forEach(d=>{const r=check(d);o+=r[0];n+=r[1];});
+ porId('tot').textContent='Total: '+o+' / '+n;return[o,n];}
+function contar(){
+ let ok=0,n=0;const respostas={};
+ campos().forEach(f=>{n++;respostas[f.dataset.qid]=f.value;if(f.value.trim()&&norm(f.value)==norm(f.dataset.a))ok++;});
+ return{acertos:ok,total:n,respostas:respostas};
+}
+root.addEventListener('click',e=>{const c=e.target.dataset.c;if(c!==undefined)check(document.getElementById('s'+c));});
+root.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.tagName=='INPUT'){const f=[...root.querySelectorAll('input')];const i=f.indexOf(e.target);if(f[i+1])f[i+1].focus();}});
+porId('all').onclick=total;
+porId('sol').onclick=()=>{campos().forEach(f=>{f.value=f.dataset.a;});total();gravar();};
+porId('rst').onclick=()=>{campos().forEach(f=>{f.value='';f.classList.remove('ok','wa','ba');});document.querySelectorAll('.sc').forEach(x=>x.textContent='');porId('tot').textContent='';gravar();};
+
+/* ---------------- guardar/restaurar no navegador ---------------- */
+const nomeEl=porId('nome'), turmaEl=porId('turma'), botao=porId('enviar'), statusEl=porId('status');
+let enviando=false, estadoEnvio=null, timerGravar=0;
+const INICIO=Date.now();
+
+function lerEstado(){try{return JSON.parse(localStorage.getItem(CHAVE)||'{}');}catch(e){return {};}}
+function gravar(){
+ clearTimeout(timerGravar);
+ timerGravar=setTimeout(()=>{
+  const respostas={};campos().forEach(f=>respostas[f.dataset.qid]=f.value);
+  try{localStorage.setItem(CHAVE,JSON.stringify({nome:nomeEl.value,turma:turmaEl.value,respostas:respostas,ts:Date.now(),enviado:estadoEnvio}));}catch(e){}
+ },250);
+}
+function msg(texto,tipo){statusEl.className='msg msg-'+(tipo||'info');statusEl.textContent=texto;}
+
+function mostrarEnviado(){
+ if(!estadoEnvio)return;
+ const quando=new Date(estadoEnvio.em);
+ const data=isNaN(quando)?'':quando.toLocaleString();
+ msg('Enviado el '+data+'. Puedes corregir y volver a enviar.','info');
+ botao.textContent='Enviar de nuevo';
+}
+
+/* ---------------- envio para a professora ---------------- */
+const URL_ENVIO=(function(){
+ const daUrl=new URLSearchParams(location.search).get('endpoint');
+ return String(daUrl||ENVIO_URL||'').trim();
+})();
+
+function postar(corpo){
+ return fetch(URL_ENVIO,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:corpo,redirect:'follow'})
+  .then(r=>r.ok?r.text():Promise.reject(new Error('HTTP '+r.status)))
+  .then(t=>{if(!t)return{ok:true};try{return JSON.parse(t);}catch(e){return{ok:true};}})
+  .catch(()=>fetch(URL_ENVIO,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:corpo})
+   .then(()=>({ok:true,semConfirmacao:true}))
+   .catch(()=>postarIframe(corpo)));
+}
+
+function postarIframe(corpo){
+ return new Promise((resolve,reject)=>{
+  const nomeForm='envio-questionario';
+  const velho=document.getElementById(nomeForm);if(velho)velho.remove();
+  const iframe=document.createElement('iframe');
+  iframe.name=nomeForm;iframe.style.display='none';
+  document.body.appendChild(iframe);
+  const form=document.createElement('form');
+  form.id=nomeForm;form.method='POST';form.action=URL_ENVIO;form.target=nomeForm;form.style.display='none';
+  const campo=document.createElement('input');
+  campo.type='hidden';campo.name='payload';campo.value=corpo;
+  form.appendChild(campo);
+  document.body.appendChild(form);
+  const limite=setTimeout(()=>{form.remove();iframe.remove();resolve({ok:true,semConfirmacao:true});},12000);
+  iframe.addEventListener('load',()=>{clearTimeout(limite);form.remove();iframe.remove();resolve({ok:true,semConfirmacao:true});});
+  try{form.submit();}catch(e){clearTimeout(limite);reject(e);}
+ });
+}
+
+function enviar(){
+ if(enviando)return;
+ if(!URL_ENVIO){msg('El envío todavía no está configurado. Avisa a tu profesora.','erro');return;}
+ const nome=(nomeEl.value||'').trim(), turma=(turmaEl.value||'').trim();
+ if(nome.length<3||!turma){
+  msg('Escribe tu nombre y tu curso antes de enviar.','erro');
+  (nome.length<3?nomeEl:turmaEl).focus();
+  return;
+ }
+ const c=contar();
+ const emBranco=c.total-Object.keys(c.respostas).filter(k=>String(c.respostas[k]).trim()).length;
+ if(emBranco>0&&!confirm('Te quedan '+emBranco+' respuestas en blanco. ¿Enviar igualmente?'))return;
+ if(estadoEnvio&&!confirm('Ya enviaste tus respuestas antes. ¿Enviar otra vez?'))return;
+
+ enviando=true;botao.disabled=true;
+ const textoOriginal=botao.textContent;
+ botao.textContent='Enviando…';
+ msg('Enviando tus respuestas…','info');
+ const dados={
+  versao:VERSAO,nome:nome,turma:turma,respostas:c.respostas,
+  acertosLocal:c.acertos,total:c.total,
+  duracaoSeg:Math.round((Date.now()-INICIO)/1000),
+  enviadoEm:new Date().toISOString()
+ };
+ postar(JSON.stringify(dados)).then(r=>{
+  if(r&&r.ok===false){throw new Error(r.erro||'El servidor no aceptó el envío.');}
+  estadoEnvio={em:new Date().toISOString(),acertos:(r&&typeof r.acertos=='number')?r.acertos:null,total:(r&&r.total)||c.total};
+  gravar();
+  let texto=(r&&r.semConfirmacao)
+   ?'Enviado. No pudimos confirmar la respuesta del servidor; si la profesora no lo ve, avísale.'
+   :'Recibido: la profesora ya puede ver tus respuestas.';
+  if(estadoEnvio.acertos!=null)texto+=' Acertos registrados: '+estadoEnvio.acertos+' / '+estadoEnvio.total+'.';
+  msg(texto,'ok');
+  botao.textContent='Enviar de nuevo';
+ }).catch(e=>{
+  msg('No se pudo enviar ('+(e&&e.message?e.message:'erro de conexão')+'). Revisa tu conexión e inténtalo otra vez; tus respuestas siguen guardadas.','erro');
+  botao.textContent=textoOriginal;
+ }).then(()=>{enviando=false;botao.disabled=false;});
+}
+
+botao.addEventListener('click',enviar);
+[nomeEl,turmaEl].forEach(el=>el.addEventListener('input',gravar));
+root.addEventListener('input',gravar);
+root.addEventListener('change',gravar);
+
+/* ---------------- restaurar ao abrir ---------------- */
+(function restaurar(){
+ const est=lerEstado();
+ if(est.nome)nomeEl.value=est.nome;
+ if(est.turma)turmaEl.value=est.turma;
+ if(est.respostas)campos().forEach(f=>{const v=est.respostas[f.dataset.qid];if(v!=null)f.value=v;});
+ if(est.enviado){estadoEnvio=est.enviado;mostrarEnviado();}
+ else if(!URL_ENVIO){msg('El envío se activa cuando la profesora configure el destino.','info');}
+})();
+</script>
+</body>
+</html>
