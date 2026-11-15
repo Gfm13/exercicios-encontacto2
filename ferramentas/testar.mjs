@@ -26,7 +26,7 @@ function checar(condicao, descricao, detalhe) {
 }
 
 /** Executa o <script> da página com um DOM mínimo, só para inspecionar o HTML gerado. */
-function executarPagina(html) {
+function executarPagina(html, opcoes = {}) {
   const secoes = [];
   const porId = new Map();
 
@@ -61,7 +61,10 @@ function executarPagina(html) {
       return porId.get(id);
     },
     createElement: elemento,
-    querySelectorAll() { return []; },
+    querySelectorAll(sel) {
+      if (sel === '[data-qid]' && opcoes.campos) return opcoes.campos;
+      return [];
+    },
     addEventListener() {},
     body: elemento('body')
   };
@@ -78,7 +81,7 @@ function executarPagina(html) {
   const confirms = [];
   const fabrica = new Function(
     'document', 'localStorage', 'location', 'confirm', 'fetch',
-    script[1] + '\nreturn { norm, strip, comecar, abrirPortada, abrirConteudo, abrirSolucoes, fecharSolucoes, alternarPista };'
+    script[1] + '\nreturn { norm, strip, comecar, abrirPortada, abrirConteudo, abrirSolucoes, fecharSolucoes, alternarPista, mostrarConfirmaBorrar };'
   );
   const api = fabrica(documento, localStorage, { search: '' }, (m) => { confirms.push(m); return true; }, () => Promise.reject(new Error('sem rede')));
 
@@ -232,12 +235,33 @@ checar(/hablé/.test(pista.innerHTML), 'clicar na pista revela só aquela respos
 sol.api.alternarPista(pista);
 checar(pista.innerHTML === '(hablar)', 'clicar de novo esconde a resposta');
 
-console.log('\n10. «Borrar todo» com confirmação');
-checar(/porId\('rst'\)[\s\S]{0,400}?confirm\(/.test(html), 'o botão pede confirmação antes de apagar');
+console.log('\n10. «Borrar todo» com confirmação dentro da página');
+checar(/id="rst-confirma"/.test(html) && /id="rst-sim"/.test(html) && /id="rst-nao"/.test(html), 'confirmação embutida no HTML');
+checar(!/porId\('rst'\)[\s\S]{0,200}?confirm\(/.test(html), 'não usa mais o diálogo nativo do navegador');
 
-const apagar = executarPagina(html);
-apagar.documento.getElementById('rst').onclick();
-checar(apagar.confirms.length === 0, 'sem respostas escritas, não incomoda com diálogo');
+const semNada = executarPagina(html);
+const noSem = (id) => semNada.documento.getElementById(id);
+noSem('rst').onclick();
+checar(noSem('rst-confirma').hidden === true && noSem('rst').hidden === false, 'sem respostas escritas, não abre confirmação');
+
+const campoFalso = () => ({ value: 'hablé', dataset: { qid: '1.1' }, classList: { add() {}, remove() {} } });
+const camposFalsos = [campoFalso(), campoFalso()];
+camposFalsos[1].value = '  ';
+const comRespostas = executarPagina(html, { campos: camposFalsos });
+const noCom = (id) => comRespostas.documento.getElementById(id);
+
+comRespostas.api.mostrarConfirmaBorrar();
+checar(noCom('rst-confirma').hidden === false && noCom('rst').hidden === true, 'com respostas, mostra a confirmação e esconde o botão');
+checar(camposFalsos[0].value === 'hablé', 'abrir a confirmação não apaga nada');
+
+noCom('rst-nao').onclick();
+checar(noCom('rst-confirma').hidden === true && noCom('rst').hidden === false, '«Cancelar» volta ao normal');
+checar(camposFalsos[0].value === 'hablé', '«Cancelar» preserva as respostas');
+
+noCom('rst').onclick();
+noCom('rst-sim').onclick();
+checar(camposFalsos[0].value === '', '«Sí, borrar» limpa os campos');
+checar(noCom('rst-confirma').hidden === true && noCom('rst').hidden === false, 'depois de apagar, o botão volta ao lugar');
 
 console.log('');
 if (falhas) {
